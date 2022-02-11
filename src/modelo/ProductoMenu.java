@@ -1,7 +1,7 @@
 package modelo;
 
 /*
- * POR IMPLEMENTAR: generarTextoFactura()
+ * TERMINADO
  */
 
 public class ProductoMenu implements Producto
@@ -30,9 +30,9 @@ public class ProductoMenu implements Producto
 	
 	public String generarTextoFactura()
 	{
-		//POR IMPLEMENTAR
+		String precio = Integer.toString(getPrecio());
+		String linea = nombre + " ----- " + precio;
 		
-		String factura = "N/A";
-		return factura;
+		return linea;
 	}
 }

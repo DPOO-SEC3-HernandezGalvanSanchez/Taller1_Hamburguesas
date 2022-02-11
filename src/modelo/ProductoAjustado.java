@@ -4,12 +4,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /*
- * POR IMPLEMENTAR: generarTextoFactura()
+ * FALTA DEFINIR COMO AGREGAR ELEMENTOS A LAS LISTAS DE
+ * AGREGADOS Y ELIMINADOS
  */
 
 public class ProductoAjustado implements Producto
 {
-	ProductoMenu base;
+	private ProductoMenu base;
 	private LinkedList<Ingrediente> agregados;
 	private LinkedList<Ingrediente> eliminados;
 	
@@ -49,15 +50,33 @@ public class ProductoAjustado implements Producto
 	
 	public String generarTextoFactura()
 	{
-		/*
-		 *"Las facturas de los pedidos deben discriminar
-		 * el valor de cada elemento, el valor neto total,
-		 * el IVA (19%) y el valor total (neto + IVA)."
-		 *  
-		 * POR IMPLEMENTAR
-		 */
+		String nombre = getNombre();
+		String precio_base = Integer.toString(base.getPrecio());
+		String precio_total = Integer.toString(getPrecio());
+		String linea = "\nPRODUCTO AJUSTADO";
+		linea += "\n" + "Producto Base: " + nombre + " -- " + precio_base;
 		
-		String factura = "N/A";
-		return factura;
+		
+		Iterator<Ingrediente> iter_ag = agregados.iterator();
+		Iterator<Ingrediente> iter_el = eliminados.iterator();
+		
+		while (iter_ag.hasNext())
+		{
+			Ingrediente i_agregado = iter_ag.next();
+			String ag_nombre = i_agregado.getNombre();
+			String adicional = Integer.toString(i_agregado.getCostoAdicional());
+			linea += "\n  Adicion de " + ag_nombre + " --- " + adicional;
+		}
+		
+		while (iter_el.hasNext())
+		{
+			Ingrediente i_eliminado = iter_el.next();
+			String el_nombre = i_eliminado.getNombre();
+			linea += "\n  Sin " + el_nombre;
+		}
+		
+		linea += "\nTotal " + nombre + " ----- " + precio_total;
+		
+		return linea;
 	}
 }
