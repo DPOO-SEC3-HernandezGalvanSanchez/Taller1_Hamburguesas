@@ -14,10 +14,11 @@ public class ProductoAjustado implements Producto
 	private LinkedList<Ingrediente> agregados;
 	private LinkedList<Ingrediente> eliminados;
 	
-	
 	public ProductoAjustado(ProductoMenu base)
 	{
 		this.base = base;
+		agregados = new LinkedList<Ingrediente>();
+		eliminados = new LinkedList<Ingrediente>();
 	}
 
 	

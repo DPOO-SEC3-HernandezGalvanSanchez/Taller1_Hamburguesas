@@ -22,6 +22,8 @@ public class Pedido
 		this.nombreCliente = nombreCliente;
 		this.direccionCliente = direccionCliente;
 		numeroPedidos ++;
+		idPedido = numeroPedidos;
+		itemsPedido = new LinkedList<Producto>();
 	}
 	
 	
@@ -92,7 +94,7 @@ public class Pedido
 		
 		String factura = "Cliente: " + nombreCliente;
 		factura += "\nDireccion: " + direccionCliente;
-		factura += "\nNumero de Pedido: " + Integer.toString(numeroPedidos);
+		factura += "\nNumero de Pedido: " + Integer.toString(idPedido);
 		factura += "\n\n-----------------------------------";
 		factura += "\nPRODUCTOS";
 		factura += "\n-----------------------------------";

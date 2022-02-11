@@ -18,6 +18,7 @@ public class Combo implements Producto
 	{
 		this.nombreCombo = nombre;
 		this.descuento = descuento;
+		itemsCombo = new LinkedList<ProductoMenu>();
 	}
 	
 	
