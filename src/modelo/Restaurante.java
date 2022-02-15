@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 /* 
- * Desviacion del modelo en getMenuBase(), getIngredientes()
+ * Metodo adicional: getCombos()
  */
 
 public class Restaurante
@@ -47,15 +47,24 @@ public class Restaurante
 	}
 	
 	
-	public HashMap<String, ProductoMenu> getMenuBase()
+	public ArrayList<Producto> getMenuBase()
 	{
-		return menuBase;
+		ArrayList<Producto> newList = new ArrayList<>(menuBase.values());
+		return newList;
 	}
 	
 	
-	public HashMap<String, Ingrediente> getIngredientes()
+	public ArrayList<Producto> getCombos()
 	{
-		return ingredientes;
+		ArrayList<Producto> newList = new ArrayList<>(combos.values());
+		return newList;
+	}
+	
+	
+	public ArrayList<Ingrediente> getIngredientes()
+	{
+		ArrayList<Ingrediente> newList = new ArrayList<>(ingredientes.values());
+		return newList;
 	}
 	
 	
