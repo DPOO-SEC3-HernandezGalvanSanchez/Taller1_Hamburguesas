@@ -1,8 +1,10 @@
 package modelo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /* 
  * Desviacion del modelo en getMenuBase(), getIngredientes()
@@ -59,7 +61,7 @@ public class Restaurante
 	
 	public void cargarInformacionRestaurante(File archivoIngredientes,
 											 File archivoMenu,
-											 File archivoCombos)
+											 File archivoCombos) throws FileNotFoundException
 	{
 		cargarIngredientes(archivoIngredientes);
 		cargarMenu(archivoMenu);
@@ -67,20 +69,56 @@ public class Restaurante
 	}
 	
 	
-	private void cargarIngredientes(File archivoIngredientes)
+	private void cargarIngredientes(File archivoIngredientes) throws FileNotFoundException
 	{
-		
+		Scanner Reader = new Scanner(archivoIngredientes);
+		while (Reader.hasNextLine()) {
+			String Line = Reader.nextLine();
+			String[] partes = Line.split(";");
+			String nombreIngrediente = partes[0];
+			int costoAdicional = Integer.parseInt(partes[1]);
+			
+			Ingrediente ingr = new Ingrediente(nombreIngrediente, costoAdicional);
+			ingredientes.put(nombreIngrediente, ingr);
+		}
+		Reader.close();
 	}
 	
 	
-	private void cargarMenu(File archivoMenu)
+	private void cargarMenu(File archivoMenu) throws FileNotFoundException
 	{
-		
+		Scanner Reader = new Scanner(archivoMenu);
+		while (Reader.hasNextLine()) {
+			String Line = Reader.nextLine();
+			String[] partes = Line.split(";");
+			String nombreProducto = partes[0];
+			int precio = Integer.parseInt(partes[1]);
+			
+			ProductoMenu Producto = new ProductoMenu(nombreProducto, precio);
+			menuBase.put(nombreProducto, Producto);
+		}
+		Reader.close();
 	}
 	
 	
-	private void cargarCombos(File archivoCombos)
+	private void cargarCombos(File archivoCombos) throws FileNotFoundException
 	{
-		
+		Scanner Reader = new Scanner(archivoCombos);
+		while (Reader.hasNextLine()) {
+			String Line = Reader.nextLine();
+			String[] partes = Line.split(";");
+			String nombreCombo = partes[0];
+			double descuento = Double.parseDouble(partes[1].replace("%", ""));
+
+			Combo combo = new Combo(nombreCombo, descuento);
+			
+			for(int i=2; i<partes.length ; i++) {
+				String nombreProducto = partes[i];
+				ProductoMenu nProducto = menuBase.get(nombreProducto);
+				combo.agregarItemACombo(nProducto);
+			}
+			combos.put(nombreCombo, combo);
+		}
+		Reader.close();
 	}
 }
