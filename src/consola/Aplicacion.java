@@ -1,6 +1,8 @@
 package consola;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public class Aplicacion
 		System.out.println("Restaurante El Corral\n");
 
 		boolean continuar = true;
+		Pedido pedido = null;
 		while (continuar)
 		{
 			try
@@ -27,14 +30,15 @@ public class Aplicacion
 				cargarInformacion();
 				
 				int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opcion"));
+				
 				if (opcion_seleccionada == 1)
 					mostrarMenu();
 				else if (opcion_seleccionada == 2)
-					iniciarPedido();
+				 pedido = iniciarPedido();
 				else if (opcion_seleccionada == 3)
 					agregarElemento();
 				else if (opcion_seleccionada == 4)
-					cerrarPedido();
+					cerrarPedido(pedido);
 				else if (opcion_seleccionada == 5)
 					consultarInformacion();
 				else if (opcion_seleccionada == 6)
@@ -70,9 +74,15 @@ public class Aplicacion
 	{
 		System.out.println("Cargando archivos...");
 		restaurante = new Restaurante();
-		//restaurante.cargarInformacionRestaurante("./data/ingredientes.txt",
-		//										 "./data/menu.txt",
-		//										 "./data/combos.txt");
+		File ingredientes = new File("./data/ingredientes.txt");
+		File menu = new File("./data/menu.txt"); 
+		File combos = new File("./data/combos.txt");
+		try {
+			restaurante.cargarInformacionRestaurante(ingredientes,menu,combos);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 // 1. Mostrar el menu
@@ -116,18 +126,21 @@ public class Aplicacion
 	
 	
 // 2. Iniciar un nuevo pedido	
-	public void iniciarPedido()
+	public Pedido iniciarPedido()
 	{
-		String nombreCliente = input("Ingrese el nombre del cliente: ");
-		String direccionCliente = input("Ingrede la direccion del cliente: ");
-		restaurante.iniciarPedido(nombreCliente, direccionCliente);
+		String nombreCliente = input("Ingrese el nombre del cliente ");
+		String direccionCliente = input("Ingrese la direccion del cliente ");
+		Pedido pedidoActual = restaurante.iniciarPedido(nombreCliente, direccionCliente);
+		
+		return pedidoActual;
 	}
+	
 	
 	
 // 3. Agregar un elemento a un pedido
 	public void agregarElemento()
 	{
-		Pedido pedidoActual = restaurante.getPedidoEnCurso();
+		//Pedido pedidoActual = restaurante.getPedidoEnCurso();
 		ArrayList<Producto> menuBase = restaurante.getMenuBase();
 		ArrayList<Producto> combos = restaurante.getCombos();
 		ArrayList<Ingrediente> ingredientes = restaurante.getIngredientes();
@@ -144,9 +157,18 @@ public class Aplicacion
 	
 	
 // 	4. Cerrar un pedido y guardar la factura
-	public void cerrarPedido()
+	public void cerrarPedido(Pedido pedido)
 	{
-		
+		File factura = new File("./data/"+ pedido.getIdPedido() + ".txt");
+		try {
+			factura.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pedido.guardarFactura(factura);
+		restaurante.cerrarYGuardarPedido();
+		System.out.println("funciona");
 	}
 	
 // 5. Consultar la informacion de un pedido dado su id

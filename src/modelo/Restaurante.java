@@ -27,11 +27,13 @@ public class Restaurante
 	}
 	
 	
-	public void iniciarPedido(String nombreCliente, String direccionCliente)
+	public Pedido iniciarPedido(String nombreCliente, String direccionCliente)
 	{
 		pedidoEnCurso = 1;
 		Pedido elPedido = new Pedido(nombreCliente, direccionCliente);
-		pedidos.add(elPedido);		
+		pedidos.add(elPedido);	
+		
+		return elPedido;
 	}
 	
 	
@@ -44,6 +46,7 @@ public class Restaurante
 	public Pedido getPedidoEnCurso()
 	{
 		return pedidos.get(pedidos.size() - 1);
+		
 	}
 	
 	
