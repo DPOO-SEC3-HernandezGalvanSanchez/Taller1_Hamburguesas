@@ -1,9 +1,5 @@
 package modelo;
 
-/*
- * TERMINADO
- */
-
 public interface Producto
 {
 	public int getPrecio();

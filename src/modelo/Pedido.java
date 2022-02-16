@@ -8,8 +8,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /*
- * POR IMPLEMENTAR: guardarFactura()
- * Desviacion del modelo en getPrecioIVAPedido() y getPrecioTotalPedido()
+ * Desviacion del modelo en getPrecioIVAPedido() y
+ * getPrecioTotalPedido() por los parametros que
+ * reciben
  */
 
 public class Pedido
@@ -57,7 +58,7 @@ public class Pedido
 	}
 	
 	
-	private int getPrecioNetoPedido()
+	private int getPrecioTotalPedido()
 	{
 		int precio = 0;
 		Iterator<Producto> iter_items = itemsPedido.iterator();
@@ -72,27 +73,29 @@ public class Pedido
 	}
 	
 	
+	private int getPrecioNetoPedido(int precio_total)
+	{
+		/*
+		 * SE RECIBEN PRECIO TOTAL POR PARAMETRO PARA NO
+		 * RECALCULARLO
+		 */
+		
+		float precio_neto = precio_total/1.19F;
+		
+		return Math.round(precio_neto);
+	}
+	
+	
 	private int getPrecioIVAPedido(int precio_neto)
 	{
 		/*
-		 * SE RECIBE EL PRECIO NETO POR PARAMETRO PARA NO RECALCULARLO
-		 * CAMBIO DE TIPO DE RETORNO DE INT A DOUBLE?
-		 * REDONDEAR RESPUESTA?
+		 * SE RECIBE EL PRECIO NETO POR PARAMETRO PARA
+		 * NO RECALCULARLO
 		 */
 		
 		float iva = precio_neto*0.19F;
 		
 		return Math.round(iva);
-	}
-	
-	
-	private int getPrecioTotalPedido(int precio_neto, int precio_IVA)
-	{
-		/*
-		 * SE RECIBEN PRECIO NETO E IVA POR PARAMETRO
-		 * PARA NO RECALCULARLOS
-		 */
-		return precio_neto + precio_IVA;
 	}
 	
 	
@@ -106,9 +109,9 @@ public class Pedido
 		 * POR IMPLEMENTAR
 		 */
 		
-		int p_neto = getPrecioNetoPedido();
+		int precio_total = getPrecioTotalPedido();
+		int p_neto = getPrecioNetoPedido(precio_total);
 		int p_iva = getPrecioIVAPedido(p_neto);
-		int precio_total = getPrecioTotalPedido(p_neto, p_iva);
 		
 		String factura = "Cliente: " + nombreCliente;
 		factura += "\nDireccion: " + direccionCliente;

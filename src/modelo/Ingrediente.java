@@ -1,9 +1,5 @@
 package modelo;
 
-/*
- * TERMINADO
- */
-
 public class Ingrediente
 {
 	private String nombre;

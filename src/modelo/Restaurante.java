@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Restaurante
 {
-	static private ArrayList<Pedido> pedidos;
+	private ArrayList<Pedido> pedidos;
 	private int pedidoEnCurso; 
 	private HashMap<String, ProductoMenu> menuBase;
 	private HashMap<String, Ingrediente> ingredientes;
@@ -27,14 +27,18 @@ public class Restaurante
 	}
 	
 	
-	public Pedido iniciarPedido(String nombreCliente, String direccionCliente)
+	public void iniciarPedido(String nombreCliente, String direccionCliente)
 	{
-		pedidoEnCurso = 1;
-		Pedido elPedido = new Pedido(nombreCliente, direccionCliente);
-		pedidos.add(elPedido);	
+		boolean sePuede = !hayPedidoEnCurso();
 		
-		return elPedido;
+		if (sePuede)
+		{
+			pedidoEnCurso = 1;
+			Pedido elPedido = new Pedido(nombreCliente, direccionCliente);
+			pedidos.add(elPedido);	
+		}
 	}
+	
 	
 	public ArrayList<Pedido> consultarPedidos()
 	{
@@ -126,6 +130,7 @@ public class Restaurante
 			String[] partes = Line.split(";");
 			String nombreCombo = partes[0];
 			double descuento = Double.parseDouble(partes[1].replace("%", ""));
+			descuento = descuento/100;
 
 			Combo combo = new Combo(nombreCombo, descuento);
 			
@@ -137,5 +142,16 @@ public class Restaurante
 			combos.put(nombreCombo, combo);
 		}
 		Reader.close();
+	}
+	
+	
+	public boolean hayPedidoEnCurso()
+	{
+		boolean resp = false;
+		
+		if (pedidoEnCurso==1)
+			resp = true;
+
+		return resp;
 	}
 }
