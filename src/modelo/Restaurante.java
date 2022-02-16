@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Restaurante
 {
-	private ArrayList<Pedido> pedidos;
+	static private ArrayList<Pedido> pedidos;
 	private int pedidoEnCurso; 
 	private HashMap<String, ProductoMenu> menuBase;
 	private HashMap<String, Ingrediente> ingredientes;
@@ -34,6 +34,11 @@ public class Restaurante
 		pedidos.add(elPedido);	
 		
 		return elPedido;
+	}
+	
+	public ArrayList<Pedido> consultarPedidos()
+	{
+		return pedidos;
 	}
 	
 	

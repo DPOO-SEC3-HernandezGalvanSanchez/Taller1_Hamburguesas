@@ -35,6 +35,21 @@ public class Pedido
 		return idPedido;
 	}
 	
+	public String getNombreCliente() 
+	{
+		return nombreCliente;	
+	}
+	
+	public String getDireccionCliente()
+	{
+		return direccionCliente;
+	}
+	
+	public LinkedList<Producto> getItemsPedido()
+	{
+		return itemsPedido;
+	}
+	
 	
 	public void agregarProducto(Producto nuevoItem)
 	{

@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
 
 import modelo.Ingrediente;
 import modelo.Pedido;
@@ -23,12 +25,12 @@ public class Aplicacion
 
 		boolean continuar = true;
 		Pedido pedido = null;
+		cargarInformacion();
 		while (continuar)
 		{
 			try
 			{
 				mostrarOpciones();
-				cargarInformacion();
 				
 				int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opcion"));
 				
@@ -169,13 +171,32 @@ public class Aplicacion
 		}
 		pedido.guardarFactura(factura);
 		restaurante.cerrarYGuardarPedido();
-		System.out.println("funciona");
+		System.out.println("Archivo creado");
 	}
 	
 // 5. Consultar la informacion de un pedido dado su id
 	public void consultarInformacion()
 	{
+		Scanner leer = new Scanner(System.in);
+		System.out.println("Escribe el id del pedido: ");
+		int id = leer.nextInt();
+		ArrayList<Pedido> pedidos = restaurante.consultarPedidos();
 		
+		Iterator<Pedido> nombreIterator = pedidos.iterator();
+		while(nombreIterator.hasNext()){
+			Pedido elemento = nombreIterator.next();
+			if (id == elemento.getIdPedido()) {
+				System.out.println("id: " + elemento.getIdPedido());
+				System.out.println("Cliente: " + elemento.getNombreCliente());
+				System.out.println("Direccion: " + elemento.getDireccionCliente());
+				System.out.println("Items Pedidos: " + elemento.getItemsPedido().toString());
+				System.out.println("Para mas informacion busque la factura en la carpeta data que tenga como nombre el id");
+				
+			}
+			else {
+				System.out.println("No se encontro ningun pedido con el id especificado");
+			}
+		}
 	}
 	
 	public String input(String mensaje)
