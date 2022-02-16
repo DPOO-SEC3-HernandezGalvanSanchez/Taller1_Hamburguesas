@@ -1,6 +1,9 @@
 package modelo;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -30,6 +33,21 @@ public class Pedido
 	public int getIdPedido()
 	{
 		return idPedido;
+	}
+	
+	public String getNombreCliente() 
+	{
+		return nombreCliente;	
+	}
+	
+	public String getDireccionCliente()
+	{
+		return direccionCliente;
+	}
+	
+	public LinkedList<Producto> getItemsPedido()
+	{
+		return itemsPedido;
 	}
 	
 	
@@ -122,6 +140,17 @@ public class Pedido
 	public void guardarFactura(File archivo)
 	{
 		String factura = generarTextoFactura();
+		FileWriter fw;
+		try {
+			fw = new FileWriter(archivo);
+			BufferedWriter bw = new BufferedWriter(fw);
+			 bw.write(factura);
+	         bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 }
