@@ -221,10 +221,7 @@ public class Aplicacion
 	}
 	
 	
-<<<<<<< HEAD
-=======
 	
->>>>>>> Daniel
 	public String input(String mensaje)
 	{
 		try
