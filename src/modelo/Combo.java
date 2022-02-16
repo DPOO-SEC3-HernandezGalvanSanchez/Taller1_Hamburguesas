@@ -3,10 +3,6 @@ package modelo;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-/*
- * TERMINADO
- * Desviacion del modelo en getPrecio()
- */
 
 public class Combo implements Producto
 {
@@ -35,12 +31,7 @@ public class Combo implements Producto
 
 	
 	public int getPrecio()
-	{
-		/*
-		 * CAMBIO DE TIPO DE RETORNO DE INT A DOUBLE?
-		 * REDONDEAR RESPUESTA?
-		 */
-		
+	{		
 		int precio = 0;
 		Iterator<ProductoMenu> iter_items = itemsCombo.iterator();
 		

@@ -19,6 +19,7 @@ public class Aplicacion
 {
 	private Restaurante restaurante;
 	
+	
 	public void ejecutarOpcion()
 	{
 		System.out.println("Restaurante El Corral\n");
@@ -26,6 +27,7 @@ public class Aplicacion
 		boolean continuar = true;
 		Pedido pedido = null;
 		cargarInformacion();
+		
 		while (continuar)
 		{
 			try
@@ -35,13 +37,13 @@ public class Aplicacion
 				int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opcion"));
 				
 				if (opcion_seleccionada == 1)
-					mostrarMenu();
+					iniciarPedido();
 				else if (opcion_seleccionada == 2)
-				 pedido = iniciarPedido();
+					mostrarMenu();
 				else if (opcion_seleccionada == 3)
 					agregarElemento();
 				else if (opcion_seleccionada == 4)
-					cerrarPedido(pedido);
+					cerrarPedido();
 				else if (opcion_seleccionada == 5)
 					consultarInformacion();
 				else if (opcion_seleccionada == 6)
@@ -62,16 +64,19 @@ public class Aplicacion
 		}
 	}
 	
+	
 	public void mostrarOpciones()
 	{
-		System.out.println("\nOpciones de la aplicacion\n");
-		System.out.println("1. Mostrar el menu");
-		System.out.println("2. Iniciar un nuevo pedido");
-		System.out.println("3. Agregar un elemento a un pedido");
-		System.out.println("4. Cerrar un pedido y guardar la factura");
+		System.out.println("\n--------------------------------");
+		System.out.println("Opciones de la aplicacion\n");
+		System.out.println("1. Iniciar un nuevo pedido");
+		System.out.println("2. Mostrar el menu del restaurante");
+		System.out.println("3. Agregar un producto al pedido");
+		System.out.println("4. Cerrar el pedido y guardar la factura");
 		System.out.println("5. Consultar la informacion de un pedido dado su id");
 		System.out.println("6. Salir de la aplicacion\n");
 	}
+	
 	
 	public void cargarInformacion()
 	{
@@ -88,10 +93,12 @@ public class Aplicacion
 		}
 	}
 	
+	
+	
 // 1. Mostrar el menu
 	public void mostrarMenu()
 	{
-		System.out.println("A continuacion, el menu base:");
+		System.out.println("\nA continuacion, el menu base:");
 		ArrayList<Producto> menuBase = restaurante.getMenuBase();
 		int numProductos = menuBase.size();
 		
@@ -103,7 +110,7 @@ public class Aplicacion
 		}
 		
 		
-		System.out.println("A continuacion, los combos:");
+		System.out.println("\nA continuacion, los combos:");
 		ArrayList<Producto> combos = restaurante.getCombos();
 		int numCombos = combos.size();
 		
@@ -114,8 +121,8 @@ public class Aplicacion
 			System.out.println("C" + i2 + ": " + nombreCombo);
 		}
 		
-		
-		System.out.println("A continuacion, los ingredientes:");
+		/*
+		System.out.println("\nA continuacion, los ingredientes:");
 		ArrayList<Ingrediente> ingredientes = restaurante.getIngredientes();
 		int numIngredientes = ingredientes.size();
 		
@@ -125,54 +132,65 @@ public class Aplicacion
 			String nombreIngrediente = elIngrediente.getNombre();
 			System.out.println("I" + i3 + ": " + nombreIngrediente);
 		}
+		*/
 	}
+	
 	
 	
 // 2. Iniciar un nuevo pedido	
-	public Pedido iniciarPedido()
+	public void iniciarPedido()
 	{
 		String nombreCliente = input("Ingrese el nombre del cliente ");
 		String direccionCliente = input("Ingrese la direccion del cliente ");
-		Pedido pedidoActual = restaurante.iniciarPedido(nombreCliente, direccionCliente);
-		
-		return pedidoActual;
+		restaurante.iniciarPedido(nombreCliente, direccionCliente);
 	}
 	
 	
 	
-// 3. Agregar un elemento a un pedido
+// 3. Agregar un elemento al pedido
 	public void agregarElemento()
 	{
-		//Pedido pedidoActual = restaurante.getPedidoEnCurso();
+		Pedido pedidoActual = restaurante.getPedidoEnCurso();
 		ArrayList<Producto> menuBase = restaurante.getMenuBase();
 		ArrayList<Producto> combos = restaurante.getCombos();
 		ArrayList<Ingrediente> ingredientes = restaurante.getIngredientes();
 		
-		String numProducto = input("Ingrese el numero del producto que desea agregar como aparece en el menu: ");
+		String numProducto = input("Ingrese el numero del producto que desea agregar como aparece en el menu");
 		String typeIndex = numProducto.substring(0,1);
 		Integer lstIndex = Integer.parseInt(numProducto.substring(1));
 		
 		if (typeIndex.equals("P"))
 		{
 			Producto elProducto = menuBase.get(lstIndex);
+			pedidoActual.agregarProducto(elProducto);
+		}
+		
+		else if (typeIndex.equals("C"))
+		{
+			Producto elCombo = combos.get(lstIndex);
+			pedidoActual.agregarProducto(elCombo);
 		}
 	}
 	
 	
+	
 // 	4. Cerrar un pedido y guardar la factura
-	public void cerrarPedido(Pedido pedido)
+	public void cerrarPedido()
 	{
-		File factura = new File("./data/"+ pedido.getIdPedido() + ".txt");
+		Pedido pedidoActual = restaurante.getPedidoEnCurso();
+		File factura = new File("./pedidos/"+ pedidoActual.getIdPedido() + ".txt");
 		try {
 			factura.createNewFile();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		pedido.guardarFactura(factura);
+		pedidoActual.guardarFactura(factura);
 		restaurante.cerrarYGuardarPedido();
 		System.out.println("Archivo creado");
 	}
+	
+	
 	
 // 5. Consultar la informacion de un pedido dado su id
 	public void consultarInformacion()
@@ -199,6 +217,8 @@ public class Aplicacion
 		}
 	}
 	
+	
+	
 	public String input(String mensaje)
 	{
 		try
@@ -214,6 +234,7 @@ public class Aplicacion
 		}
 		return null;
 	}
+	
 	
 	
 	public static void main(String[] args)

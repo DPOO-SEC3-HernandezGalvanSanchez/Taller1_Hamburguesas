@@ -1,9 +1,5 @@
 package modelo;
 
-/*
- * TERMINADO
- */
-
 public class ProductoMenu implements Producto
 {
 	private String nombre;
