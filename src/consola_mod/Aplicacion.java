@@ -1,4 +1,4 @@
-package consola;
+package consola_mod;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,10 +11,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-import modelo.Ingrediente;
-import modelo.Pedido;
-import modelo.Producto;
-import modelo.Restaurante;
+import modelo_mod.Bebida;
+import modelo_mod.Ingrediente;
+import modelo_mod.Pedido;
+import modelo_mod.Producto;
+import modelo_mod.Restaurante;
 
 public class Aplicacion
 {
@@ -82,11 +83,12 @@ public class Aplicacion
 	{
 		System.out.println("Cargando archivos...");
 		restaurante = new Restaurante();
-		File ingredientes = new File("./data/ingredientes.txt");
-		File menu = new File("./data/menu.txt"); 
+		File ingredientes = new File("./data/ingredientes_calorias.txt");
+		File menu = new File("./data/menu_calorias.txt"); 
 		File combos = new File("./data/combos.txt");
+		File bebidas = new File("./data/bebidas.txt");
 		try {
-			restaurante.cargarInformacionRestaurante(ingredientes,menu,combos);
+			restaurante.cargarInformacionRestaurante(ingredientes,menu,combos,bebidas);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,6 +123,17 @@ public class Aplicacion
 			System.out.println("C" + i2 + ": " + nombreCombo);
 		}
 		
+		
+		System.out.println("\n A continuacion, las bebidas disponibles:");
+		ArrayList<Producto> bebidas = restaurante.getBebidas();
+		int numBebidas = bebidas.size();
+		
+		for (int i3= 0; i3<numBebidas; i3++)
+		{
+			Producto laBebida = bebidas.get(i3);
+			String nombreBebida = laBebida.getNombre();
+			System.out.println("B"+i3+": "+nombreBebida);
+		}
 		/*
 		System.out.println("\nA continuacion, los ingredientes:");
 		ArrayList<Ingrediente> ingredientes = restaurante.getIngredientes();
@@ -153,6 +166,7 @@ public class Aplicacion
 		Pedido pedidoActual = restaurante.getPedidoEnCurso();
 		ArrayList<Producto> menuBase = restaurante.getMenuBase();
 		ArrayList<Producto> combos = restaurante.getCombos();
+		ArrayList<Producto> bebidas = restaurante.getBebidas();
 		//ArrayList<Ingrediente> ingredientes = restaurante.getIngredientes();
 		
 		String numProducto = input("Ingrese el numero del producto que desea agregar como aparece en el menu");
@@ -173,6 +187,13 @@ public class Aplicacion
 			pedidoActual.agregarProducto(elCombo);
 			
 			System.out.println("El combo '" + elCombo.getNombre() + "' fue agregado al pedido");
+		}
+		
+		else if (typeIndex.equals("B"))
+		{
+			Producto laBebida = bebidas.get(lstIndex);
+			pedidoActual.agregarProducto(laBebida);
+			System.out.println("La bebida '" + laBebida.getNombre()+ "' fue agregada al pedido");
 		}
 	}
 	
