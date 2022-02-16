@@ -181,6 +181,7 @@ public class Aplicacion
 		System.out.println("Escribe el id del pedido: ");
 		int id = leer.nextInt();
 		ArrayList<Pedido> pedidos = restaurante.consultarPedidos();
+		boolean elementoExiste = false;
 		
 		Iterator<Pedido> nombreIterator = pedidos.iterator();
 		while(nombreIterator.hasNext()){
@@ -191,13 +192,16 @@ public class Aplicacion
 				System.out.println("Direccion: " + elemento.getDireccionCliente());
 				System.out.println("Items Pedidos: " + elemento.getItemsPedido().toString());
 				System.out.println("Para mas informacion busque la factura en la carpeta data que tenga como nombre el id");
+				elementoExiste = true;
+				break;
 				
 			}
-			else {
-				System.out.println("No se encontro ningun pedido con el id especificado");
-			}
 		}
+		if (elementoExiste == false) {
+			System.out.println("No se encontro ningun pedido con el id especificado");
+			}
 	}
+	
 	
 	public String input(String mensaje)
 	{
