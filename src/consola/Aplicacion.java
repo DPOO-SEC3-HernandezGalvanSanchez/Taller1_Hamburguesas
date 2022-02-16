@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 import modelo.Ingrediente;
@@ -25,7 +26,6 @@ public class Aplicacion
 		System.out.println("Restaurante El Corral\n");
 
 		boolean continuar = true;
-		Pedido pedido = null;
 		cargarInformacion();
 		
 		while (continuar)
@@ -73,7 +73,7 @@ public class Aplicacion
 		System.out.println("2. Mostrar el menu del restaurante");
 		System.out.println("3. Agregar un producto al pedido");
 		System.out.println("4. Cerrar el pedido y guardar la factura");
-		System.out.println("5. Consultar la informacion de un pedido dado su id");
+		System.out.println("5. Consultar la informacion de un pedido antiguo dado su id");
 		System.out.println("6. Salir de la aplicacion\n");
 	}
 	
@@ -153,7 +153,7 @@ public class Aplicacion
 		Pedido pedidoActual = restaurante.getPedidoEnCurso();
 		ArrayList<Producto> menuBase = restaurante.getMenuBase();
 		ArrayList<Producto> combos = restaurante.getCombos();
-		ArrayList<Ingrediente> ingredientes = restaurante.getIngredientes();
+		//ArrayList<Ingrediente> ingredientes = restaurante.getIngredientes();
 		
 		String numProducto = input("Ingrese el numero del producto que desea agregar como aparece en el menu");
 		String typeIndex = numProducto.substring(0,1);
@@ -163,12 +163,16 @@ public class Aplicacion
 		{
 			Producto elProducto = menuBase.get(lstIndex);
 			pedidoActual.agregarProducto(elProducto);
+			
+			System.out.println("El producto '" + elProducto.getNombre() + "' fue agregado al pedido");
 		}
 		
 		else if (typeIndex.equals("C"))
 		{
 			Producto elCombo = combos.get(lstIndex);
 			pedidoActual.agregarProducto(elCombo);
+			
+			System.out.println("El combo '" + elCombo.getNombre() + "' fue agregado al pedido");
 		}
 	}
 	
@@ -205,11 +209,24 @@ public class Aplicacion
 		while(nombreIterator.hasNext()){
 			Pedido elemento = nombreIterator.next();
 			if (id == elemento.getIdPedido()) {
+				String items = "";
+				
+				LinkedList<Producto> listaProductos = elemento.getItemsPedido();
+				Iterator<Producto> iter_pedidos = listaProductos.iterator();
+				while(iter_pedidos.hasNext())
+				{
+					Producto unProducto = iter_pedidos.next();
+					
+					if (listaProductos.indexOf(unProducto)>0)
+						items += ", ";
+					items += unProducto.getNombre();
+				}
+				
 				System.out.println("id: " + elemento.getIdPedido());
 				System.out.println("Cliente: " + elemento.getNombreCliente());
 				System.out.println("Direccion: " + elemento.getDireccionCliente());
-				System.out.println("Items Pedidos: " + elemento.getItemsPedido().toString());
-				System.out.println("Para mas informacion busque la factura en la carpeta data que tenga como nombre el id");
+				System.out.println("Items Pedido: " + items);
+				System.out.println("\nPara mas informacion busque la factura en la carpeta data que tenga como nombre el id");
 				elementoExiste = true;
 				break;
 				
